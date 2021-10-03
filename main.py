@@ -61,17 +61,13 @@ while running:
         car_list.append(car)
         car_count += 1
 
-    #print(elapsed_time/1000, " seconds passed")
-    #print(current_time / 1000, " seconds passed")
-    
-    
     # After 10 seconds, change red signal to yellow
     if isRed() and elapsed_time > 10000:
         yellow()
         signal_time = current_time
         
-    # After 5 seconds, change yellow signal to green
-    elif isYellow() and elapsed_time > 5000:
+    # After 2 seconds, change yellow signal to green
+    elif isYellow() and elapsed_time > 2000:
         green()
         signal_time = current_time
 

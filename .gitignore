@@ -3,3 +3,4 @@
 __pycache__/car.cpython-39.pyc
 __pycache__/timer.cpython-39.pyc
 __pycache__/trafficSignal.cpython-39.pyc
+*.pyc

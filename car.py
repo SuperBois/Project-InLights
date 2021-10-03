@@ -39,6 +39,7 @@ class UpCar(Car):
         self.next_angle = 90
         self.angle_increment = 15
         self.rotate = False
+        self.has_rotated = False
         # add the car to carList and update car id
         UpCar.carList[self.id] = self.rect
         UpCar.id += 1
@@ -51,6 +52,7 @@ class UpCar(Car):
         self.angle_increment = 15
         # resets the rotation and position of the car
         self.rotate = False
+        self.has_rotated = False
         self.rot_center()
         self.rect.x = 400 + (30 * (self.id % UpCar.lanes))
         self.rect.y = UpCar.pos_y
@@ -71,12 +73,13 @@ class UpCar(Car):
 
     def shouldRotate(self):
         # checks whether to start the rotation of car from angle to next_angle
-        if self.rotate and self.angle != self.next_angle:
+        if self.rotate and self.angle != self.next_angle and not self.has_rotated:
             self.angle += self.angle_increment
             self.rot_center()
         # if the rotation is completed
         if self.angle == self.next_angle:
             self.rotate = False
+            self.has_rotated = True
 
     def move(self):
         # move the car if it should not stop
@@ -98,8 +101,11 @@ class UpCar(Car):
             self.angle_increment = 15
         # rotate the car towards right if it is in the 4th lane
         if self.id % UpCar.lanes == 3:
+            if round(random.random()) == 1:
                 self.next_angle = -90
-                self.angle_increment = -15
+            else:
+                self.next_angle = -180
+            self.angle_increment = -15
         # calling the functions to check if the car should rotate or reposition
         self.shouldRotate()
         self.shouldReset()
@@ -108,7 +114,7 @@ class UpCar(Car):
 
     def shouldStop(self):
         # send stop signal if traffic signal is red
-        if 630 < self.rect.y < 650 and (isRed() or isYellow()):
+        if 630 < self.rect.y < 650 and (isRed() or isYellow()) and self.angle == 0:
             return True
         # # send stop signal if car is about to collide with next car
 
