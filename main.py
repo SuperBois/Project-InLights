@@ -42,7 +42,7 @@ while running:
     # Flip the display
     pygame.display.flip()
 
-    if random.randint(1,10) == 5 and car_count < 10:
+    if random.randint(1,10) == 5 and car_count < 15:
         car = UpCar()
         car_list.append(car)
         car_count += 1
