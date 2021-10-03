@@ -26,7 +26,13 @@ def yellow():
 
 
 def isRed():
-    return UpSignal.color != 2
+    return UpSignal.color == 0
+    
+def isYellow():
+    return UpSignal.color == 1
+
+def isGreen():
+    return UpSignal.color == 2
 
 
 class UpSignal:

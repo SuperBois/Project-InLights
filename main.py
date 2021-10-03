@@ -5,15 +5,19 @@ import random
 import pygame
 from car import *
 from trafficSignal import *
+from timer import *
+import time
 
 pygame.init()
 
-
+font = pygame.font.SysFont("Consolas",30)
 clock = pygame.time.Clock()
 # Set up the drawing window
 screen = pygame.display.set_mode([1050, 1050])
 # Run until the user asks to quit
 running = True
+
+signal_time = 0
 
 car_list = []  # a list that stores the reference of every single car
 
@@ -31,6 +35,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    # measuring time
+    current_time = pygame.time.get_ticks()
+    
     # Fill the background with white
     screen.blit(background, (0,0,0,0))
 
@@ -38,7 +45,14 @@ while running:
     for car in car_list:
         screen.blit(car.image, car.rect)
         car.move()
+    
     screen.blit(UpSignal.image, UpSignal.rect)
+    elapsed_time = (current_time - signal_time)
+    
+    # Displaying time on screen
+    draw_time(screen, f"Master Time: {int(current_time / 1000)} sec", font, 200, 150)
+    draw_time(screen, f"Signal Time:  {int(elapsed_time / 1000)} sec", font, 200, 700)
+    
     # Flip the display
     pygame.display.flip()
 
@@ -46,17 +60,25 @@ while running:
         car = UpCar()
         car_list.append(car)
         car_count += 1
-    if i > 150:
-        if isRed():
-            if i < 200:
-                yellow()
-            else:
-                green()
-                i = 0
-        else:
-            red()
-            i=0
-    i += 1
+
+    #print(elapsed_time/1000, " seconds passed")
+    #print(current_time / 1000, " seconds passed")
+    
+    
+    # After 10 seconds, change red signal to yellow
+    if isRed() and elapsed_time > 10000:
+        yellow()
+        signal_time = current_time
+        
+    # After 5 seconds, change yellow signal to green
+    elif isYellow() and elapsed_time > 5000:
+        green()
+        signal_time = current_time
+
+    # After 10 seconds, change green to red
+    elif isGreen() and elapsed_time > 10000:
+        red()
+        signal_time = current_time
 
     clock.tick(30)
 

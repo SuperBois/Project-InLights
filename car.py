@@ -108,7 +108,7 @@ class UpCar(Car):
 
     def shouldStop(self):
         # send stop signal if traffic signal is red
-        if 630 < self.rect.y < 650 and isRed():
+        if 630 < self.rect.y < 650 and (isRed() or isYellow()):
             return True
         # # send stop signal if car is about to collide with next car
 
